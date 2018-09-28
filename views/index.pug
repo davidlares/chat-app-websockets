@@ -1,0 +1,46 @@
+doctype html
+html(lang='en')
+  head
+    title DavidWebsockets
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css')
+  body
+    nav
+      .nav-wrapper.grey.darken-1
+        a.brand-logo.center(href='#') DavidWebsockets
+        ul#nav-mobile.left.hide-on-med-and-down
+          li
+            a(onclick="pathUrl()") New tab
+    .container
+      .row(style='margin-top: 25px')
+        #sendCtrls.col.s11.input-field
+          i.material-icons.prefix account_circle
+          input#text(type='text', name='text', value='')
+          label(for='icon_prefix') Type your message
+        .col.s1.input-field(style='margin-top: 20px')
+          a#button.btn-floating.grey.darken-1
+            i.material-icons add
+      .row.text-center
+        .col.offset-s2.s8
+          ul#log.collection
+      .row.white.text-darken-2
+        .col.s12
+          .center-align
+            | © 2018 davidlares/davidWebsockets 
+            br
+            a(href='https://github.com/davidlares/DavidWebsockets') Go to repo
+    #modal1.modal
+      .modal-content
+        h4 Identify yourself
+        p Who are you, fella?
+        .container
+          .row
+            .col.s12.input-field
+              label(for='icon_prefix') Type your name
+              input#username(type='text', name='text')
+            .col.s12.center-align.input-field
+              a#setUser.waves-effect.waves-light.btn.grey-darken-1.text-center(style='background-color: grey !important') Add to Chat
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js')
+    script(type="text/javascript", src='client-socket.js')
