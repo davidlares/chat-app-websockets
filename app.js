@@ -1,6 +1,5 @@
 const express = require('express');
-const ws = require('ws');
-const server = new ws.Server({port: 5000});
+const ws = require('ws').Server;
 const port = process.env.PORT || 3000;
 
 // HTTP
@@ -18,7 +17,11 @@ app.get('/', (req,res) => {
   res.render('index');
 });
 
+app.listen(port, () => console.log(`on port ${port}`));
+
 // Websockets
+const server = new ws({port: 5000, server: app});
+
 server.on('connection', (ws) => {
   // receiving messages
   ws.on('message', (message) => {
@@ -40,5 +43,3 @@ server.on('connection', (ws) => {
   })
   console.log(`client connected`);
 });
-
-app.listen(port, () => console.log(`on port ${port}`));
