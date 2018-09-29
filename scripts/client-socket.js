@@ -1,5 +1,5 @@
 // HTML5 Native websocket
-var sock = new WebSocket(`ws://${window.location.hostname}`);
+var sock = new WebSocket(`wss://${window.location.hostname}`);
 
 var log = $('#log');
 var field = $('#text');
