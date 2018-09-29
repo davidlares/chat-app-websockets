@@ -1,15 +1,44 @@
 const express = require('express');
 const ws = require('ws');
+const server = new ws.Server({port: 5000});
+const port = process.env.PORT || 3000;
 
+// HTTP
 // express instance
 const app = express();
-// views
-app.set('views', './views');
-// view engine
-app.set('view engine', 'pug');
 // static files
 app.use(express.static('scripts'));
+// view engine
+app.set('view engine', 'pug');
+// views
+app.set('views', './views');
+
 // get instance
 app.get('/', (req,res) => {
   res.render('index');
-}).listen(3000, () => console.log('Listening on 3000'));
+});
+
+// Websockets
+server.on('connection', (ws) => {
+  // receiving messages
+  ws.on('message', (message) => {
+    // parsing the message -> client
+    message = JSON.parse(message);
+    // first handshake
+    if(message.type == 'name'){
+      ws.personName = message.data;
+      return;
+    }
+    // broadcasting
+    server.clients.forEach((client) => {
+      client.send(JSON.stringify({ name: ws.personName, data: message.data}));
+    });
+  });
+  // leaving socket (or refreshing website)
+  ws.on('close', () => {
+    console.log(`I lost a client`);
+  })
+  console.log(`client connected`);
+});
+
+app.listen(port, () => console.log(`on port ${port}`));
