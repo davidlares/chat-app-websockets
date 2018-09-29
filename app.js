@@ -1,10 +1,13 @@
 const express = require('express');
 const ws = require('ws').Server;
+const http = require('http'); // needed to communicate with ws
 const port = process.env.PORT || 3000;
 
 // HTTP
 // express instance
 const app = express();
+// http server
+const httpserver = http.createServer(app); //
 // static files
 app.use(express.static('scripts'));
 // view engine
@@ -17,8 +20,10 @@ app.get('/', (req,res) => {
   res.render('index');
 });
 
+httpserver.listen(port, () => console.log(`on port ${port}`));
+
 // Websockets
-const server = new ws({port: 5000, server: app});
+const server = new ws({ server: httpserver });
 
 server.on('connection', (ws) => {
   // receiving messages
@@ -41,5 +46,3 @@ server.on('connection', (ws) => {
   })
   console.log(`client connected`);
 });
-
-app.listen(port, () => console.log(`on port ${port}`));
